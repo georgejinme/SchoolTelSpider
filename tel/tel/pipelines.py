@@ -10,11 +10,19 @@ import json
 import codecs
 
 class TelPipeline(object):
+	history = []
+
 	def __init__(self):
 		self.file = codecs.open('items.json', 'w', encoding = 'utf-8')
 
 	def process_item(self,item,spider):
-		line = json.dumps(dict(item)) + "\n"
-		self.file.write(line.decode('unicode_escape'))
-		return item
+		if len(item['tel']) > 0:
+			for i in range(len(item['tel']) - 1, -1, -1):
+				if not item['tel'][i]:
+					item['tel'].pop(i)
+			if not (item in self.history):
+				self.history.append(item)
+				line = json.dumps(dict(item)) + "\n"
+				self.file.write(line.decode('unicode_escape'))
+				return item
 
