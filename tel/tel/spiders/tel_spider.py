@@ -4,15 +4,21 @@ from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors import LinkExtractor
 
 class telSpider(CrawlSpider):
-    name = "SJTU"
-    allowed_domains = ["sjtu.edu.cn"]
-    start_urls = [
-        "http://www.sjtu.edu.cn"
-    ]
+    schoolDic = {"SJTU": ["sjtu.edu.cn", "http://www.sjtu.edu.cn"]}
 
-    rules = (
-      Rule(LinkExtractor(), callback = 'parse_item', follow = True),
-    )
+    name = "tel"
+    allowed_domains = []
+    start_urls = []
+    rules = (Rule(LinkExtractor(), callback = 'parse_item', follow = True),)
+
+    def __init__(self, school=None, *args, **kwargs):
+      super(telSpider, self).__init__(*args, **kwargs)
+
+      self.allowed_domains = [self.schoolDic[school][0]]
+      self.start_urls = [
+        self.schoolDic[school][1]
+      ]
+      
 
 
     def parse_item(self, response):

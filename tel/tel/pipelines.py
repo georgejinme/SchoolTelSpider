@@ -11,6 +11,7 @@ import codecs
 
 class TelPipeline(object):
 	history = []
+	
 
 	def __init__(self):
 		self.file = codecs.open('items.json', 'w', encoding = 'utf-8')
